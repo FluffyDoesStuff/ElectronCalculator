@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body class="titlebar">
+        <div id="bottom">
+            <a id="numbers" class="equation" onclick="copyText()">0</a>
+        </div>
+    </body>
+    <style>
+        .centerImg {
+          margin: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+        }
+    </style>
+    &nbsp;
+    <section>
+        <button type="button" onclick="clear()"             tabindex="-1" class="clear">C</button>
+        <button type="button" onclick="setEquation('1')"    tabindex="-1" class="numButtons num1">1</button>
+        <button type="button" onclick="setEquation('2')"    tabindex="-1" class="numButtons num2">2</button>
+        <button type="button" onclick="setEquation('3')"    tabindex="-1" class="numButtons num3">3</button>
+        <button type="button" onclick="setEquation('4')"    tabindex="-1" class="numButtons num4">4</button>
+        <button type="button" onclick="setEquation('5')"    tabindex="-1" class="numButtons num5">5</button>
+        <button type="button" onclick="setEquation('6')"    tabindex="-1" class="numButtons num6">6</button>
+        <button type="button" onclick="setEquation('7')"    tabindex="-1" class="numButtons num7">7</button>
+        <button type="button" onclick="setEquation('8')"    tabindex="-1" class="numButtons num8">8</button>
+        <button type="button" onclick="setEquation('9')"    tabindex="-1" class="numButtons num9">9</button>
+        <button type="button" onclick="setEquation('0')"    tabindex="-1" class="numButtons num0">0</button>
+        <button type="button" onclick="setEquation('.')"    tabindex="-1" class="numButtons argDot">.</button>
+
+        <button type="button" onclick="setEquation('+')" tabindex="-1" class="argButtons argP">&nbsp;<img src="icons/plus2x.png" class="centerImg" style="width:18px;height:auto;"/>&nbsp;</button>
+        <button type="button" onclick="setEquation('-')" tabindex="-1" class="argButtons argMi"><img src="icons/minus2x.png" class="centerImg" style="width:14px;height:auto;"/></button>
+        <button type="button" onclick="setEquation('/')" tabindex="-1" class="argButtons argD"><img src="icons/divide2x.png" class="centerImg" style="width:16px;height:auto;"/></button>
+        <button type="button" onclick="setEquation('*')" tabindex="-1" class="argButtons argMu"><img src="icons/multiply2x.png" class="centerImg" style="width:14px;height:auto;"/></button>
+        <button type="button" tabindex="-1" class="fillerG"></button>
+
+        <button type="button" onclick="calculate()" tabindex="-1" class="argButtons argE"><img src="icons/equal2x.png" class="centerImg" style="width:14px;height:auto;"/></button>
+    </section>
+
+    
+    <script>
+        console.log("Started");
+        var equation = "";
+
+        function setEquation(variable) {
+            if(equation == "0" || equation == "Error") {
+                equation = variable.toString();
+            } else {
+                equation = equation + variable.toString();
+            }
+            console.log(equation);
+            updateNumbers();
+        }
+
+        function calculate() {
+            try {
+                if(eval(equation) != "undefined") {
+                    equation = eval(equation);
+                    updateNumbers();
+                } else {
+                    equation = "Error"
+                    updateNumbers();
+                    equation = 0;
+                }
+                
+            } catch (err) {
+                equation = "Error";
+                updateNumbers();
+                equation = 0;
+            }
+        }
+
+        function onElementFocused(e)
+        {
+            if (e && e.target)
+                document.activeElement = e.target == document ? null : e.target;
+        } 
+
+        if (document.addEventListener) 
+            document.addEventListener("focus", onElementFocused, true);
+
+        function clear() {
+            equation = "0";
+            updateNumbers();
+        }
+
+        function updateNumbers() { 
+            document.getElementById("numbers").innerHTML = equation;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            var name = event.key;
+
+            if(name == "1" || name == "2" || name == "3" || name == "4" || name == "5" || name == "6" || name == "7" || name == "8" || name == "9" || name == "0" || name == "+" || name == "-" || name == "/" || name == "*" || name == "." || name == "(" || name == ")" || name == "^" || name == "."){
+                setEquation(name);
+                console.log("Number");
+            }
+            if(name == "Enter") {
+                calculate();
+            }
+            if(name == "Backspace") {
+                // let split = equation.toString().split(" ");
+                // alert(split + ", " + split.length + ", " + split[split.length - 1]);
+                // split.remove(split[split.length - 1]);
+                // equation = split.join("");
+                equation = equation.slice(0, -1)
+                if(equation == "") {
+                    equation = 0;
+                }
+                updateNumbers();
+            }
+            if(name == "c") {
+                equation = "0";
+                updateNumbers();
+            }
+        }, false);
+    </script>
+</html>
