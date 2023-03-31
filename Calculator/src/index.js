@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
+const { autoUpdater } = require('electron-updater');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -13,7 +14,8 @@ const createWindow = () => {
     height: 325,
     vibrancy: 'ultra-dark',
     webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        devTools: false
     },
     resizable: false,
     titleBarStyle: "hidden"
